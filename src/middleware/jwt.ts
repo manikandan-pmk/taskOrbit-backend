@@ -1,12 +1,17 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 import { Request, Response, NextFunction } from 'express';
 
-const middleware = (req:Request , res:Response , next:NextFunction)=>{
+interface AuthRequest extends Request {
+    user? : JwtPayload
+}
+
+const Auth = (req:AuthRequest , res:Response , next:NextFunction)=>{
     try {
 
         const token = req.headers.authorization?.split(' ')[1];
+        console.log(token)
 
         if (!token) {
             return res.status(401).json({
@@ -15,12 +20,15 @@ const middleware = (req:Request , res:Response , next:NextFunction)=>{
             });
         }
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET!)
+        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload
+        console.log(decoded)
 
-        req.body.user = decoded;
+        req.user = decoded;
         next();
 
     }catch(err){
+        console.error("MIDDLEWARE ERROR:", err);
+
         return res.status(500).json({
             error:true,
             message:"Middleware error"
@@ -28,3 +36,5 @@ const middleware = (req:Request , res:Response , next:NextFunction)=>{
     }
 
 }
+
+export default Auth;
