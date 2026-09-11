@@ -97,14 +97,23 @@ export const loginUser = async (req: Request, res: Response) => {
 
     // JWT payload
     const payload = {
-      userId: user.id,
+      userId: user.user_id,
       email: user.email,
     };
 
     // Generate token
     const token = jwt.sign(payload, process.env.JWT_SECRET!, {
-      expiresIn: "1h",
+      expiresIn: "1d",
     });
+
+    const cookieOptions = {
+      httpOnly:true,
+      secure: false,
+      sameSite: "strict" as const,
+      maxAge: 36000000, // 1 hour in milliseconds
+    }
+
+    res.cookie("token",token,cookieOptions)
 
     return res.status(200).json({
       success: true,
@@ -130,7 +139,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
 export const getUser = async (req: AuthRequest, res: Response) => {
   try {
-    const user_id = req.user?.user_id;
+    const user_id = req.user?.userId;
 
     if (!user_id) {
       res.status(400).json({
@@ -151,6 +160,7 @@ export const getUser = async (req: AuthRequest, res: Response) => {
         avatarUrl: true,
         createdAt: true,
         updatedAt: true,
+        workspace:true
       },
     });
 
@@ -179,8 +189,8 @@ export const getUser = async (req: AuthRequest, res: Response) => {
 
 export const deleteUser = async (req: AuthRequest, res: Response) => {
   try {
-    const user_id = req.user?.user_id;
-    console.log(req.params);
+    const user_id = req.user?.userId;
+    console.log(user_id);
 
     const user = await prismaClient.user.delete({
       where: {
@@ -214,7 +224,7 @@ export const deleteUser = async (req: AuthRequest, res: Response) => {
 
 export const updateUser = async (req: AuthRequest, res: Response) => {
   try {
-    const { user_Id } = req.user?.user_Id;
+    const { user_Id } = req.user?.userId;
 
     const { name, email, avatarUrl } = req.body;
 
@@ -250,3 +260,5 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
     });
   }
 };
+
+

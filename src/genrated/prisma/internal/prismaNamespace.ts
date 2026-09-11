@@ -623,7 +623,8 @@ export const WorkspaceScalarFieldEnum = {
   id: 'id',
   org_Id: 'org_Id',
   Name: 'Name',
-  user_Id: 'user_Id'
+  user_Id: 'user_Id',
+  Role: 'Role'
 } as const
 
 export type WorkspaceScalarFieldEnum = (typeof WorkspaceScalarFieldEnum)[keyof typeof WorkspaceScalarFieldEnum]
@@ -698,6 +699,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'WorkspaceRole'
+ */
+export type EnumWorkspaceRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkspaceRole'>
+    
+
+
+/**
+ * Reference to a field of type 'WorkspaceRole[]'
+ */
+export type ListEnumWorkspaceRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkspaceRole[]'>
     
 
 

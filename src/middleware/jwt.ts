@@ -10,7 +10,7 @@ interface AuthRequest extends Request {
 const Auth = (req:AuthRequest , res:Response , next:NextFunction)=>{
     try {
 
-        const token = req.headers.authorization?.split(' ')[1];
+        const token = req.cookies?.token;
         console.log(token)
 
         if (!token) {

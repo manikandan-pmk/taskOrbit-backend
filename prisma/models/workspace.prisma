@@ -3,5 +3,11 @@ model Workspace {
     org_Id String @id @default(uuid()) @unique
     Name String
     user_Id String
-    user User @relation(fields:[user_Id] , references:[user_id])
+    Role WorkspaceRole
+    user User @relation(fields:[user_Id] , references:[user_id] onDelete)
+}
+
+enum WorkspaceRole {
+    PERSONAL
+    ORGANIZATION
 }
