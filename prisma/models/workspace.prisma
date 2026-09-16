@@ -4,7 +4,9 @@ model Workspace {
     Name String
     user_Id String
     Role WorkspaceRole
-    user User @relation(fields:[user_Id] , references:[user_id] onDelete)
+    members WorkSpaceMembers[]
+    user User @relation(fields:[user_Id] , references:[user_id], onDelete: Cascade)
+    invitations WorkspaceInvitation[]
 }
 
 enum WorkspaceRole {

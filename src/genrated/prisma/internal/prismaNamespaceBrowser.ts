@@ -52,7 +52,9 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Workspace: 'Workspace'
+  Workspace: 'Workspace',
+  WorkspaceInvitation: 'WorkspaceInvitation',
+  WorkSpaceMembers: 'WorkSpaceMembers'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -94,6 +96,34 @@ export const WorkspaceScalarFieldEnum = {
 } as const
 
 export type WorkspaceScalarFieldEnum = (typeof WorkspaceScalarFieldEnum)[keyof typeof WorkspaceScalarFieldEnum]
+
+
+export const WorkspaceInvitationScalarFieldEnum = {
+  id: 'id',
+  invitationId: 'invitationId',
+  workspaceId: 'workspaceId',
+  email: 'email',
+  role: 'role',
+  status: 'status',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  acceptedAt: 'acceptedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type WorkspaceInvitationScalarFieldEnum = (typeof WorkspaceInvitationScalarFieldEnum)[keyof typeof WorkspaceInvitationScalarFieldEnum]
+
+
+export const WorkSpaceMembersScalarFieldEnum = {
+  id: 'id',
+  membership_Id: 'membership_Id',
+  role: 'role',
+  joinedAt: 'joinedAt',
+  workspaceId: 'workspaceId',
+  user_Id: 'user_Id'
+} as const
+
+export type WorkSpaceMembersScalarFieldEnum = (typeof WorkSpaceMembersScalarFieldEnum)[keyof typeof WorkSpaceMembersScalarFieldEnum]
 
 
 export const SortOrder = {

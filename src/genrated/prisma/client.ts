@@ -51,3 +51,13 @@ export type User = Prisma.UserModel
  * 
  */
 export type Workspace = Prisma.WorkspaceModel
+/**
+ * Model WorkspaceInvitation
+ * 
+ */
+export type WorkspaceInvitation = Prisma.WorkspaceInvitationModel
+/**
+ * Model WorkSpaceMembers
+ * 
+ */
+export type WorkSpaceMembers = Prisma.WorkSpaceMembersModel

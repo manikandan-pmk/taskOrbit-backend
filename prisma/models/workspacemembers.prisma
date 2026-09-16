@@ -1,0 +1,46 @@
+model WorkspaceInvitation {
+    id           Int      @default(autoincrement())
+    invitationId String   @id @default(uuid())
+
+    workspaceId  String
+    email        String
+    role         Role     @default(MEMBER)
+    status       status @default(PENDING)
+
+    token        String   @unique
+    expiresAt    DateTime
+    acceptedAt   DateTime?
+    createdAt    DateTime @default(now())
+
+    workspace Workspace @relation(fields: [workspaceId],references: [org_Id],onDelete: Cascade)
+
+    @@unique([workspaceId, email])
+}
+
+
+model WorkSpaceMembers {
+    id Int @default(autoincrement())
+    membership_Id String @id @default(uuid())
+    role  Role  @default(MEMBER)
+    joinedAt    DateTime  @default(now())
+
+    workspaceId String
+    user_Id      String
+
+    workspace   Workspace @relation(fields: [workspaceId], references: [org_Id], onDelete: Cascade)
+    user User @relation(fields: [user_Id], references: [user_id], onDelete: Cascade)
+}
+
+
+enum status {
+    PENDING
+    ACCEPTED
+    REJECTED
+}
+
+
+enum Role {
+  VIEWER
+  ADMIN
+  MEMBER
+}

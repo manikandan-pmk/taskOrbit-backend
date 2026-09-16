@@ -6,6 +6,7 @@ model User {
   name         String?
   avatarUrl    String?
   workspace Workspace[]
+   workspaceMembers WorkSpaceMembers[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
