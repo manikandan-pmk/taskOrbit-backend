@@ -185,8 +185,99 @@ export const workspaceInvite = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const invitedMembers = 
+export const invitedMembers = async (req: AuthRequest, res: Response) => {
+  try {
+    const user_Id = req.user?.userId;
+    const workspaceId = req.params.workspaceId;
 
+    if (!user_Id) {
+      return res.status(401).json({
+        error: true,
+        message: "Unauthorized",
+      });
+    }
+
+    // Make sure workspaceId is actually a string
+    if (typeof workspaceId !== "string" || workspaceId.length === 0) {
+      return res.status(400).json({
+        error: true,
+        message: "Workspace ID is required",
+      });
+    }
+
+    // Check workspace belongs to logged-in user
+    const workspace = await prismaClient.workspace.findFirst({
+      where: {
+        org_Id: workspaceId,
+        user_Id: user_Id,
+      },
+    });
+
+    if (!workspace) {
+      return res.status(404).json({
+        error: true,
+        message: "Workspace not found",
+      });
+    }
+
+    const invitations = await prismaClient.workspaceInvitation.findMany({
+      where: {
+        workspaceId: workspaceId,
+        status: "PENDING",
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        invitationId: true,
+        email: true,
+        role: true,
+        status: true,
+        expiresAt: true,
+        createdAt: true,
+      },
+    });
+
+    return res.status(200).json({
+      error: false,
+      message: "Invited members fetched successfully",
+      data: invitations,
+    });
+  } catch (err: any) {
+    console.log(err.message);
+
+    return res.status(500).json({
+      error: true,
+      message: "Can't fetch invited members",
+    });
+  }
+};
+
+export const AcceptWorkspaceMember = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.params;
+
+    if (!token || typeof token !== "string") {
+      return res.status(400).json({
+        error: true,
+        message: "Invalid or missing token",
+      });
+    }
+
+    const usertokenCheck = await prismaClient.workspaceInvitation.findFirst({
+      where: {
+        token: token,
+      },
+    });
+  } catch (err: any) {
+    console.error(err.message);
+
+    return res.status(500).json({
+      error: true,
+      message: "Unable to Accept",
+    });
+  }
+};
 
 export const getMembers = async (req: AuthRequest, res: Response) => {
   try {
